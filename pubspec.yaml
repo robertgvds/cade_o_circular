@@ -34,9 +34,10 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  geolocator: ^14.0.0
-  flutter_map: ^6.0.0
+  geolocator: ^11.0.0
+  flutter_map: ^6.1.0
   latlong2: ^0.9.0
+  provider: ^6.1.1
 
 dev_dependencies:
   flutter_test:

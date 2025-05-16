@@ -1,22 +1,35 @@
 import 'package:flutter/material.dart';
-import 'pages/home_page.dart';
+import 'package:provider/provider.dart';
+import 'theme.dart';
+import 'theme_provider.dart';
+import 'pages/home_screen.dart';
+//import 'second_screen.dart';
 
 void main() {
-  runApp(const CadeOCircularApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
-class CadeOCircularApp extends StatelessWidget {
-  const CadeOCircularApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
-      title: 'Cadê o Circular',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
-      ),
-      home: const HomePage(),
+      debugShowCheckedModeBanner: false,
+      title: 'Tema Dinâmico',
+      themeMode: themeProvider.themeMode,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      routes: {
+        '/': (_) => const HomeScreen(),
+        //'/second': (_) => const SecondScreen(),
+      },
     );
   }
 }
