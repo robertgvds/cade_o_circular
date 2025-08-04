@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'theme.dart';
-import 'theme_provider.dart';
+import 'theme/theme.dart';
+import 'theme/theme_provider.dart';
 import 'pages/home_screen.dart';
-//import 'second_screen.dart';
 
 void main() {
   runApp(
@@ -19,16 +18,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Tema Dinâmico',
-      themeMode: themeProvider.themeMode,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      routes: {
-        '/': (_) => const HomeScreen(),
-        //'/second': (_) => const SecondScreen(),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, _) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Tema Dinâmico',
+          themeMode: themeProvider.themeMode,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          routes: {
+            '/': (_) => const HomeScreen(),
+          },
+        );
       },
     );
   }

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-// Cores do degradê
-const Color redOrange = Color(0xFFFF4500); // vermelho alaranjado
-const Color brightRed = Color(0xFFFF0000); // vermelho puro
-const Color orangeRed = Color(0xFFFF6347); // vermelho tomate (laranja avermelhado)
+const Color redOrange = Color(0xFFFF4500);
+const Color brightRed = Color(0xFFFF0000);
+const Color orangeRed = Color(0xFFFF6347);
 
 final Gradient mainGradient = LinearGradient(
   colors: [redOrange, brightRed, orangeRed],
@@ -12,17 +11,16 @@ final Gradient mainGradient = LinearGradient(
 );
 
 final ThemeData lightTheme = ThemeData(
-  brightness: Brightness.light,
-  primaryColor: brightRed,
+  useMaterial3: true,
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: brightRed,
+    brightness: Brightness.light,
+  ),
   scaffoldBackgroundColor: Colors.white,
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
+    elevation: 4,
     backgroundColor: brightRed,
     foregroundColor: Colors.white,
-    elevation: 4,
-  ),
-  colorScheme: ColorScheme.light(
-    primary: brightRed,
-    secondary: orangeRed,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -35,19 +33,17 @@ final ThemeData lightTheme = ThemeData(
   ),
 );
 
-// Tema escuro
 final ThemeData darkTheme = ThemeData(
-  brightness: Brightness.dark,
-  primaryColor: orangeRed,
-  scaffoldBackgroundColor: Colors.black,
-  appBarTheme: AppBarTheme(
-    backgroundColor: orangeRed,
-    foregroundColor: Colors.white,
-    elevation: 4,
+  useMaterial3: true,
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: orangeRed,
+    brightness: Brightness.dark,
   ),
-  colorScheme: ColorScheme.dark(
-    primary: orangeRed,
-    secondary: redOrange,
+  scaffoldBackgroundColor: Colors.black,
+  appBarTheme: const AppBarTheme(
+    elevation: 4,
+    backgroundColor: redOrange,
+    foregroundColor: Colors.black,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
