@@ -91,7 +91,7 @@ class _FloatingToolbarState extends State<FloatingToolbar> {
                               borderSide: BorderSide.none,
                             ),
                             filled: true,
-                            fillColor: Theme.of(context).colorScheme.surfaceVariant,
+                            fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                             // Removi o suffixIcon para deixar só o botão bus como confirmar

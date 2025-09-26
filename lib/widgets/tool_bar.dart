@@ -91,8 +91,8 @@ class _FloatingToolbarPageState extends State<FloatingToolbarPage> {
                             Expanded(
                               child: SearchBar(
                                 hintText: "Pesquisar...",
-                                elevation: const MaterialStatePropertyAll(0),
-                                padding: const MaterialStatePropertyAll(
+                                elevation: const WidgetStatePropertyAll(0),
+                                padding: const WidgetStatePropertyAll(
                                     EdgeInsets.symmetric(horizontal: 16)),
                                 onChanged: (value) {},
                               ),
