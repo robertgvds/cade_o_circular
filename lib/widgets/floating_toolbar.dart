@@ -139,10 +139,10 @@ class _FloatingToolbarState extends State<FloatingToolbar> {
                               widget.onSearchSubmitted();
                               widget.focusNode.unfocus();
                             },
-                          );
-                        },
-                      ),
+                        );
+                      },
                     ),
+                  ),
                 ],
               ),
             ),

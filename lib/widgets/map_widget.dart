@@ -57,7 +57,7 @@ class MapWidget extends StatelessWidget {
           ],
         ),
         */
-        
+
         // Camada para as PARADAS (ícones azuis)
         MarkerLayer(
           markers: busStops.map((stop) {
@@ -71,7 +71,7 @@ class MapWidget extends StatelessWidget {
                 child: const Icon(
                   Icons.place,
                   color: Colors.redAccent,
-                  size: 30,
+                  size: 40,
                 ),
               ),
             );
@@ -85,7 +85,7 @@ class MapWidget extends StatelessWidget {
               point: bus.latLng,
               width: 40,
               height: 40,
-              child: const Icon(Icons.directions_bus, color: Colors.green, size: 30),
+              child: const Icon(Icons.directions_bus, color: Colors.green, size: 40),
             );
           }).toList(),
         ),
