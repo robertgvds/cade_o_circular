@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/bus_stop.dart';
-import '../models/upcoming_bus.dart'; // Importe o modelo do ônibus
+import '../models/upcoming_bus.dart';
 
 class MapWidget extends StatelessWidget {
   final MapController mapController;
@@ -31,80 +31,115 @@ class MapWidget extends StatelessWidget {
     return FlutterMap(
       mapController: mapController,
       options: MapOptions(
-        initialCenter: currentPosition!,
-        initialZoom: 16,
-        onMapReady: onMapReady, 
+        initialCenter: currentPosition ?? const LatLng(-21.775, -43.370),
+        initialZoom: 17.5, // Zoom inicial aumentado
+        onMapReady: onMapReady,
         enableMultiFingerGestureRace: true,
       ),
       children: [
         TileLayer(
-          urlTemplate:
-              isDarkTheme
-                  ? 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=dbe29069-000a-4e4e-9443-e148af835ff6'
-                  : 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png?api_key=dbe29069-000a-4e4e-9443-e148af835ff6',
+          // Voltando para o Stadia (Cinza suave) no modo escuro e Voyager (Colorido) no claro
+          urlTemplate: isDarkTheme
+              ? 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=dbe29069-000a-4e4e-9443-e148af835ff6'
+              : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png',
           subdomains: const ['a', 'b', 'c'],
-          userAgentPackageName: 'com.example.app',
+          userAgentPackageName: 'com.cadeocircular.app',
         ),
 
-        /*
-        PolylineLayer(
-          polylines: [
-            Polyline(
-              points: routePoints,
-              strokeWidth: 4.0,
-              color: Colors.grey,
-            ),
-          ],
-        ),
-        */
-
-        // Camada para as PARADAS (ícones azuis)
+        // Marcadores de PARADA
         MarkerLayer(
           markers: busStops.map((stop) {
             return Marker(
               point: stop.latLng,
-              width: 40,
-              height: 40,
-              // NOVO: GestureDetector para detectar o toque no ícone
+              width: 45,
+              height: 45,
               child: GestureDetector(
                 onTap: () => onStopMarkerTap?.call(stop),
-                child: const Icon(
-                  Icons.place,
-                  color: Colors.redAccent,
-                  size: 40,
+                child: _buildShadowedMarker(
+                  icon: Icons.place_rounded,
+                  color: const Color(0xFFFF3B30),
+                  size: 45,
                 ),
               ),
             );
           }).toList(),
         ),
 
-        // NOVO: Camada para os ÔNIBUS ATIVOS (ícones verdes)
+        // Marcadores de ÔNIBUS
         MarkerLayer(
           markers: activeBuses.map((bus) {
             return Marker(
               point: bus.latLng,
-              width: 40,
-              height: 40,
-              child: const Icon(Icons.directions_bus, color: Colors.green, size: 40),
+              width: 50,
+              height: 50,
+              child: _buildShadowedMarker(
+                icon: Icons.directions_bus_rounded,
+                color: const Color(0xFF34C759),
+                size: 40,
+                hasGlow: true,
+              ),
             );
           }).toList(),
         ),
 
-        // Camada para a localização do usuário (ícone vermelho)
         if (currentPosition != null)
           MarkerLayer(
             markers: [
               Marker(
                 point: currentPosition!,
-                width: 20,
-                height: 20,
-                child: const Icon(Icons.circle, color: Colors.blueAccent, size: 20),
+                width: 25,
+                height: 25,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blueAccent,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 3),
+                    boxShadow: [
+                      BoxShadow(color: Colors.blueAccent.withOpacity(0.5), blurRadius: 15, spreadRadius: 2)
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
       ],
     );
   }
-}
 
-        
+  Widget _buildShadowedMarker({
+    required IconData icon,
+    required Color color,
+    required double size,
+    bool hasGlow = false,
+  }) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Positioned(
+          bottom: 2,
+          child: Container(
+            width: 20,
+            height: 6,
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: const [BoxShadow(blurRadius: 4)],
+            ),
+          ),
+        ),
+        if (hasGlow)
+          Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(color: color.withOpacity(0.6), blurRadius: 20, spreadRadius: -5),
+              ],
+            ),
+          ),
+        Icon(icon, color: color, size: size),
+      ],
+    );
+  }
+}

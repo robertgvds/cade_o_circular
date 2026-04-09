@@ -4,14 +4,17 @@ import 'package:provider/provider.dart';
 import 'data/bus_stops_data.dart';
 import 'pages/home_screen.dart';
 import 'providers/map_provider.dart';
+import 'providers/location_provider.dart'; // IMPORTANTE
 import 'theme/theme.dart';
 import 'theme/theme_provider.dart';
+
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => LocationProvider()), // Novo Provider
         ChangeNotifierProvider(
           create: (_) => MapProvider(busStopsJsonData),
         ),
