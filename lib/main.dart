@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'data/bus_stops_data.dart';
 import 'pages/home_screen.dart';
 import 'providers/map_provider.dart';
-import 'providers/location_provider.dart'; // IMPORTANTE
-import 'theme/theme.dart';
-import 'theme/theme_provider.dart';
-
+import 'providers/location_provider.dart';
+import 'core/theme/theme.dart';
+import 'core/theme/theme_provider.dart';
+import 'data/repositories/mock_bus_repository.dart';
 
 void main() {
+  final repository = MockBusRepository(); // Injeta o repo
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider(create: (_) => LocationProvider()), // Novo Provider
-        ChangeNotifierProvider(
-          create: (_) => MapProvider(busStopsJsonData),
-        ),
+        ChangeNotifierProvider(create: (_) => LocationProvider()),
+        ChangeNotifierProvider(create: (_) => MapProvider(repository)), // Mudou aqui
       ],
       child: const MyApp(),
     ),

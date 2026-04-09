@@ -38,6 +38,7 @@ dependencies:
   flutter_map: ^6.1.0
   latlong2: ^0.9.0
   provider: ^6.1.1
+  figma_squircle: ^0.6.3
 
 dev_dependencies:
   flutter_test:

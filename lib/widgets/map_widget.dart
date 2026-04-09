@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import '../models/bus_stop.dart';
-import '../models/upcoming_bus.dart';
+import '../core/theme/theme.dart';
+import '../data/models/bus_stop_model.dart';
+import '../data/models/bus_location_model.dart';
 
 class MapWidget extends StatelessWidget {
   final MapController mapController;
   final LatLng? currentPosition;
   final bool isDarkTheme;
-  final List<BusStop> busStops;
+  final List<BusStopModel> busStops;
   final List<LatLng> routePoints;
-  final List<UpcomingBus> activeBuses;
+  final List<BusLocationModel> activeBuses;
   final VoidCallback? onMapReady;
-  final ValueChanged<BusStop>? onStopMarkerTap;
+  final ValueChanged<BusStopModel>? onStopMarkerTap;
 
   const MapWidget({
     super.key,
@@ -115,18 +116,7 @@ class MapWidget extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        Positioned(
-          bottom: 2,
-          child: Container(
-            width: 20,
-            height: 6,
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: const [BoxShadow(blurRadius: 4)],
-            ),
-          ),
-        ),
+        
         if (hasGlow)
           Container(
             width: size,

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/bus_stop.dart';
-import '../models/upcoming_bus.dart';
+import '../data/models/bus_stop_model.dart';
+import '../data/models/bus_location_model.dart';
 import '../providers/map_provider.dart';
-import '../theme/theme.dart'; // Importante para pegar o kAppShape
+import '../core/theme/theme.dart'; // Importante para pegar o kAppShape
 
 class StopDetailSheetContent extends StatelessWidget {
-  final BusStop stop;
-  final List<UpcomingBus> buses;
+  final BusStopModel stop;
+  final List<BusLocationModel> buses;
   final VoidCallback onBack;
   final ScrollController scrollController;
-  final Function(UpcomingBus) onBusTap; // Novo callback
+  final Function(BusLocationModel) onBusTap; // Novo callback
 
   const StopDetailSheetContent({
     super.key,
@@ -37,7 +37,7 @@ class StopDetailSheetContent extends StatelessWidget {
             height: 6,
             decoration: BoxDecoration(
               color: isDark ? Colors.white24 : Colors.black12,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(kRadiusSmall),
             ),
           ),
         ),
@@ -56,7 +56,7 @@ class StopDetailSheetContent extends StatelessWidget {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: primaryRed.withOpacity(0.1), // Vermelho forte diluído
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(kRadiusMedium),
                     ),
                     child: const Icon(Icons.place_rounded, color: primaryRed, size: 28),
                   ),
@@ -66,7 +66,7 @@ class StopDetailSheetContent extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          stop.parada,
+                          stop.longName,
                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, height: 1.1),
                         ),
                         const SizedBox(height: 4),
@@ -118,7 +118,7 @@ class StopDetailSheetContent extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(30),
       decoration: ShapeDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainer,
+        color: Theme.of(context).colorScheme.surfaceContainer.withOpacity(0.9), // Fundo semi-transparente para o efeito de vidro
         shape: kAppShape, // Padronizado
       ),
       child: Column(
@@ -131,7 +131,7 @@ class StopDetailSheetContent extends StatelessWidget {
     );
   }
 
-  Widget _buildBusCard(UpcomingBus bus, BuildContext context) {
+  Widget _buildBusCard(BusLocationModel bus, BuildContext context) {
     final bool isArriving = bus.arrivalTime <= 1;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -156,7 +156,7 @@ class StopDetailSheetContent extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(
                     color: isArriving ? const Color(0xFF34C759) : primaryRed,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(kRadiusSmall),
                     boxShadow: [
                       BoxShadow(
                         color: (isArriving ? const Color(0xFF34C759) : primaryRed).withOpacity(0.4),
@@ -176,7 +176,7 @@ class StopDetailSheetContent extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        bus.name,
+                        bus.licensePlate.toUpperCase(),
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                       ),
                       const SizedBox(height: 2),
