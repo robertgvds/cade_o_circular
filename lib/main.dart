@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'data/repositories/api_bus_repository.dart';
 import 'pages/home_screen.dart';
 import 'providers/map_provider.dart';
 import 'providers/location_provider.dart';
@@ -9,7 +10,7 @@ import 'core/theme/theme_provider.dart';
 import 'data/repositories/mock_bus_repository.dart';
 
 void main() {
-  final repository = MockBusRepository(); // Injeta o repo
+  final repository = ApiBusRepository(baseUrl: 'http://10.0.2.2:8080'); // Injeta o repo
 
   runApp(
     MultiProvider(

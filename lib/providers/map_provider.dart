@@ -4,12 +4,13 @@ import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../data/bus_route_data.dart';
+import '../data/repositories/api_bus_repository.dart';
 import '../data/repositories/mock_bus_repository.dart';
 import '../data/models/bus_stop_model.dart';
 import '../data/models/bus_location_model.dart';
 
 class MapProvider with ChangeNotifier {
-  final MockBusRepository _repository;
+  final ApiBusRepository _repository;
 
   List<BusStopModel> _allBusStops = [];
   List<BusStopModel> _filteredBusStops = [];

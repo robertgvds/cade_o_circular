@@ -23,6 +23,22 @@ class BusLocationModel {
     this.arrivalTime = 0,
   });
 
+  // --- ADICIONE ESTA FÁBRICA AQUI ---
+  factory BusLocationModel.fromJson(String licensePlate, Map<String, dynamic> json) {
+    final position = json['position'] as List<dynamic>;
+    
+    return BusLocationModel(
+      licensePlate: licensePlate,
+      busStatus: json['busStatus'] ?? 'notCirculating',
+      latitude: position[0].toDouble(),
+      longitude: position[1].toDouble(),
+      timestamp: DateTime.parse(json['timestamp']),
+      speed: (json['speed'] as num).toDouble(),
+      headingTowards: (json['headingTowards'] as num).toDouble(),
+    );
+  }
+  // ----------------------------------
+
   LatLng get latLng => LatLng(latitude, longitude);
 
   BusLocationModel copyWith({int? arrivalTime, double? latitude, double? longitude}) {
