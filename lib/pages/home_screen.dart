@@ -10,8 +10,8 @@ import '../providers/map_provider.dart';
 import '../providers/location_provider.dart';
 import '../core/theme/theme_provider.dart';
 import '../core/theme/theme.dart'; // Importante
-import '../widgets/floating_search_bottom_sheet.dart';
-import '../widgets/map_widget.dart';
+import '../widgets/floating_bottom_stops.dart';
+import '../widgets/map_view.dart';
 import '../widgets/stop_detail_sheet_content.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -106,7 +106,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainer.withOpacity(0.9),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainer.withOpacity(0.9),
                   ),
                   child: DraggableScrollableSheet(
                     initialChildSize: 0.45,
@@ -118,38 +120,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         builder: (context, provider, _) {
                           if (provider.selectedStop == null)
                             return const SizedBox();
-                          return FutureBuilder<List<BusLocationModel>>(
-                            future: provider.fetchBusesForStop(
-                              provider.selectedStop!,
-                            ),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const SizedBox(
-                                  height: 200,
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                );
-                              }
-                              return StopDetailSheetContent(
-                                scrollController: scrollController,
-                                stop: provider.selectedStop!,
-                                buses: snapshot.data ?? [],
-                                onBack: () => Navigator.pop(context),
-                                // AÇÃO DE CLICAR NO ÔNIBUS
-                                onBusTap: (bus) {
-                                  Navigator.pop(context); // Fecha a sheet
-                                  // Pequeno delay para a animação de fechar não engasgar o mapa
-                                  Future.delayed(
-                                    const Duration(milliseconds: 100),
-                                    () {
-                                      _animateToLocation(
-                                        bus.latLng,
-                                        zoom: 19.0,
-                                      ); // Zoom bem perto
-                                    },
-                                  );
+
+                          // Agora pegamos a lista de forma instantânea e síncrona
+                          final buses = provider.getBusesForStop(
+                            provider.selectedStop!,
+                          );
+
+                          return StopDetailSheetContent(
+                            scrollController: scrollController,
+                            stop: provider.selectedStop!,
+                            buses: buses, // Passa a lista direto
+                            onBack: () => Navigator.pop(context),
+                            onBusTap: (bus) {
+                              Navigator.pop(context);
+                              Future.delayed(
+                                const Duration(milliseconds: 100),
+                                () {
+                                  _animateToLocation(bus.latLng, zoom: 19.0);
                                 },
                               );
                             },
@@ -300,24 +287,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 shadows: appShadows,
               ),
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(kRadiusPill),
-                  child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap:
-                      locationProvider.currentPosition == null
-                          ? null
-                          : () => _animateToLocation(
-                            locationProvider.currentPosition!,
-                            zoom: 18.0,
-                          ),
-                  child: const Icon(
-                    Icons.my_location_rounded,
-                    color: primaryRed, // Vermelho forte
-                    size: 28,
+                borderRadius: BorderRadius.circular(kRadiusPill),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap:
+                        locationProvider.currentPosition == null
+                            ? null
+                            : () => _animateToLocation(
+                              locationProvider.currentPosition!,
+                              zoom: 18.0,
+                            ),
+                    child: const Icon(
+                      Icons.my_location_rounded,
+                      color: primaryRed, // Vermelho forte
+                      size: 28,
+                    ),
                   ),
                 ),
-              )),
+              ),
             ),
           ),
 
